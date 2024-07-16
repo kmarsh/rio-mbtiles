@@ -97,7 +97,6 @@ def extract_features(ctx, param, value):
 @click.argument(
     "files",
     nargs=-1,
-    type=click.Path(resolve_path=True),
     required=True,
     metavar="INPUT [OUTPUT]",
 )
