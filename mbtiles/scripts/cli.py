@@ -221,6 +221,11 @@ def extract_features(ctx, param, value):
     is_flag=True,
     help="Whether to exclude or include empty tiles from the output.",
 )
+@click.option(
+    "--band-count",
+    default=None,
+    help="Limit bands to export.",
+)
 @click.pass_context
 def mbtiles(
     ctx,
@@ -247,6 +252,7 @@ def mbtiles(
     creation_options,
     warp_options,
     exclude_empty_tiles,
+    band_count,
 ):
     """Export a dataset to MBTiles (version 1.3) in a SQLite file.
 
@@ -373,7 +379,10 @@ def mbtiles(
             else:
                 count = 4
         else:
-            count = src.count
+            if band_count is not None:
+                count = int(band_count)
+            else:
+                count = src.count
 
         # Parameters for creation of tile images.
         base_kwds.update(
